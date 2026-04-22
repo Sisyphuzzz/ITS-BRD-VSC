@@ -3,7 +3,7 @@
 ;* Praktikum          : GTP
 ;* Aufgaben-Nr        : Aufgabe A1
 ;* Namen              : Lennard Werner 2880253
-;*                    : Yannick Funk
+;*                    : Yannick Funk 2875549
 ;
 ;*******************************************************************************
     EXTERN initITSboard ; Helper to organize the setup of the board
@@ -25,9 +25,7 @@ GPIO_D_CLR          equ (GPIOD_BASE + 0x1A)
     ALIGN
 main
      BL initITSboard             ; needed by the board to setup
-    nop                         ; no operation
     LDR     R6, =GPIO_D_SET     ; get address of the GPIO data set register
-    LDR     R7, =GPIO_D_CLR     ; get address of the GPIO data clear register
     MOV     R8, #0x03           ; load mask 0b0011
  
     ; Set LED
