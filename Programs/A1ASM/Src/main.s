@@ -18,15 +18,13 @@ GPIOD_BASE          equ (AHB1PERIPH_BASE + 0x0C00)
 
 GPIO_D_SET          equ (GPIOD_BASE + 0x18)
 GPIO_D_CLR          equ (GPIOD_BASE + 0x1A)
-    
-
 ;* We need minimal memory setup of InRootSection placed in Code Section
     AREA  |.text|, CODE, READONLY, ALIGN = 3
     ALIGN
 main
-     BL initITSboard             ; needed by the board to setup
+     BL initITSboard            ; needed by the board to setup
     LDR     R6, =GPIO_D_SET     ; get address of the GPIO data set register
-    MOV     R8, #0x03           ; load mask 0b0011
+    MOV     R8, #2_0011         ; load mask 0b0011
  
     ; Set LED
     STRB    R8, [R6]    ; LED D08 + D09 anschalten 
