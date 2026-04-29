@@ -1,12 +1,9 @@
 ;******************** (C) COPYRIGHT HAW-Hamburg ********************************
 ;* File Name          : main.s
-;* Author             : Martin Becke    
-;* Version            : V1.0
-;* Date               : 01.06.2021
-;* Description        : This is a simple main to demonstrate data transfer
-;                     : and manipulation.
-;                     : 
-;
+;* Praktikum          : GTP
+;* Aufgaben-Nr        : Aufgabe A1
+;* Name               : Lennard Werner 2880253
+;*                    :
 ;*******************************************************************************
     EXTERN initITSboard ; Helper to organize the setup of the board
 
