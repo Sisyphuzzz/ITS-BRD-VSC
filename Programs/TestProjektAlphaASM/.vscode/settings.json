@@ -1,7 +1,0 @@
-{
-    "debug.hideSlowPreLaunchWarning": true,
-    "debug.showInStatusBar": "never",
-    "clangd.arguments": [
-        "--compile-commands-dir=c:\\Users\\Lennard\\TI_Labor\\gitProjekte\\ITSBoard\\Programs\\TestProjektAlphaASM\\out\\TestProjektAlphaASM\\ITSboard_Assembly\\Debug"
-    ]
-}

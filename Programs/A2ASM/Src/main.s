@@ -10,7 +10,7 @@
     EXPORT main         ; we need this for the linker - In this context it set the entry point,too
 
 ConstByteA  EQU 0xaffe     
-
+ 
 ;* We need some data to work on
     AREA DATA, DATA, align=2    
 VariableA   DCW 0xbeef

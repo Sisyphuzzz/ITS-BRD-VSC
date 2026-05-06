@@ -27,4 +27,4 @@ solution:
 
   # List related projects.
   projects:
-    - project: FistASMASM.cproject.yml
+    - project: A3ASM.cproject.yml
