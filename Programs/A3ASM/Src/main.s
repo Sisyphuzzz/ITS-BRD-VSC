@@ -32,7 +32,7 @@ MeinTextFeld       DCB "ABab0123",0
                 EXPORT main
                 EXTERN initITSboard
 main            PROC
-                  bl    initITSboard                 ; HW Initialisieren
+                bl    initITSboard                 ; HW Initialisieren
 
 ; Laden von Konstanten in Register
                 ;  schreibe den Wert "0x12" in das Register r0
@@ -57,11 +57,11 @@ main            PROC
                 ldr   r0,=MeinHalbwortFeld          ; Anw-08
                 ; lade die ersten 2 Bytes von "MeinHalbwortFeld" in Register 1
                 ldrh  r1,[r0]                       ; Anw-09
-                ;lade 2 Bytes, 2 Bytes entfernt von "MeinHalbwortFeld" in Register 2
+                ;lade 2 Bytes, 2 Bytes im Speciher von "MeinHalbwortFeld" verschoben in Register 2
                 ldrh  r2,[r0,#2]                    ; Anw-10
-                ;
+                ; schreibe den dezimalwert "10" in Register r3
                 mov   r3,#10                        ; Anw-11
-                ;
+                ; es werden die 2 Bytes geladen, die sich 10 Bytes von "MeinHalbwortFeld" entfernt befinden
                 ldrh  r4,[r0,r3]                    ; Anw-12
 
                 ;lade 2 Bytes, 2 Bytes entfernt von "MeinHalbwortFeld" in r5 nd verschiebe die Adresse von r0 zwei Bytes nach rechts
@@ -74,28 +74,28 @@ main            PROC
 ; Addition und Subtraktion von unsigned / signed Integer-Werten
                 ; lade in r0 die Adresse von "MeinWortFeld"
                 ldr  r0,=MeinWortFeld               ; Anw-16
-                ;
+                ; lade die ersten 4 Bytes von "MeinWortFeld in r1
                 ldr  r1,[r0]                        ; Anw-17
-                ;
+                ; lädt 4 Bytes, 4 Bytes verschoben von r0 in r2
                 ldr  r2,[r0,#4]                     ; Anw-18
-                ;
+                ; r1 und r2 werden addiert und Flag wird gesetzt
                 adds r3,r1,r2                       ; Anw-19
                 
-                ;
+                ; lade in Register 4 die 4 Bytes, 8 Bytes von r0 verschoben
                 ldr  r4,[r0,#8]                     ; Anw-20
-                ;
+                ;lade in r5 die 4 Bytes, 12 Bytes von r0 verschoben
                 ldr  r5,[r0,#12]                    ; Anw-21
-                ;
+                ;subtrahiere r5 von r4 und setzte flag
                 subs r6,r4,r5                       ; Anw-22
 
-                ;
+                ;lade in r7 4 Bytes, 16 bytes von r0 nach rechts verschoben
                 ldr  r7,[r0,#16]                    ; Anw-23
-                ;
+                ; lade in r8 4 Bytes, 20 Bytes von r0 nach rechts verschoben
                 ldr  r8,[r0,#20]                    ; Anw-24
-                ;
+                ;subtrahiere r8 von r7 und setzte Flag
                 subs r9,r7,r8                       ; Anw-25
 
-                ;
+                ;Endlosschlefe wird erzeugt mit unbedingtem Sprung
 forever         b   forever                         ; Anw-26
                 ENDP
-                END
+                END   
