@@ -2,9 +2,7 @@ import java.util.Arrays;
 
 public class PrimzahlSieb {
     public static void SucheundFinde (int[] Feld, int[] Primzahlen) {
-    
-    Feld[0] = 0;
-    Feld[1] = 0;
+     
     int y = -1;
 
     for (int all = 2; all < Feld.length; all++ ) {
