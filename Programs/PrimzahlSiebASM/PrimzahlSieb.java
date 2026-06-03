@@ -17,7 +17,8 @@ public class PrimzahlSieb {
         for (int yes = 2; yes < Feld.length; yes++) {
         if (Feld[yes] == 1) {
             if (y < 167) {
-                Primzahlen[y = y + 1] = yes;
+                Primzahlen[y] = yes;
+                y++;
             }
         }
     }

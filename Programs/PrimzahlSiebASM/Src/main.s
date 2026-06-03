@@ -45,7 +45,8 @@
                ;* Beginn der globalen Daten *
                     AREA MyData, DATA, align = 2
 Base
-Feld                SPACE 1005                
+Feld                SPACE 1001  
+Primzahlen          SPACE 200
 
 ;--------Beginn des Programms---------
 
@@ -70,7 +71,10 @@ enddo_01
 
 ;------------------Das Sieb--------------------
 
-for_02          mov     R5,#2
+for_02          ldr     R3,=Feld
+                mov     R5,#2
+                mov     R4,#1
+                mov     R2,#1001
 until_02        cmp     R5,R2
                 beq     enddo_02
 do_02           
@@ -93,6 +97,35 @@ step_02         add     R5,R5,#1
                 b       until_02
 enddo_02
 
+
+
+
+for_04          mov     R9,#167         
+                mov     R8,#0
+                ldr     R10,=Primzahlen
+                ldr     R3,=Feld
+                mov     R5,#2
+                mov     R4,#1
+                mov     R2,#1001
+until_04        cmp     R5,R2
+                beq     enddo_04
+do_04           
+if_02           ldrb    R0,[R3,R5]
+                cmp     R0,R4
+                blo     else_02
+then_02
+if_03           cmp     R8,R9
+                beq     else_03
+then_03         strh    R5,[R10,R8]
+                add     R8,#2
+else_03
+endif_03
+                b       endif_02
+else_02    
+endif_02
+step_04         add     R5,R5,#1
+                b       until_04
+enddo_04
 forever         b   forever
                 ENDP
                 END
