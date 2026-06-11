@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class PrimzahlSieb {
     public static void SucheundFinde (int[] Feld, int[] Primzahlen) {
      
-    int y = -1;
+    int y = 0;
 
     for (int all = 2; all < Feld.length; all++ ) {
         Feld[all] = 1;
@@ -16,10 +16,8 @@ public class PrimzahlSieb {
     }
         for (int yes = 2; yes < Feld.length; yes++) {
         if (Feld[yes] == 1) {
-            if (y < 167) {
                 Primzahlen[y] = yes;
-                y++;
-            }
+                y++;            
         }
     }
     System.out.println(Arrays.toString(Feld));

@@ -46,7 +46,7 @@
                     AREA MyData, DATA, align = 2
 Base
 Feld                SPACE 1001  
-Primzahlen          SPACE 200
+Primzahlen          SPACE 400
 
 ;--------Beginn des Programms---------
 
@@ -114,12 +114,8 @@ if_02           ldrb    R0,[R3,R5]
                 cmp     R0,R4
                 blo     else_02
 then_02
-if_03           cmp     R8,R9
-                beq     else_03
-then_03         strh    R5,[R10,R8]
+                strh    R5,[R10,R8]
                 add     R8,#2
-else_03
-endif_03
                 b       endif_02
 else_02    
 endif_02
