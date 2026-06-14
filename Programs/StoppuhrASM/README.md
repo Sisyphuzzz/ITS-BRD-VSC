@@ -61,7 +61,7 @@ das Programm wird in überschaubare Unterprogramme vereinfacht.
 main (Super-Loop): Bildet die zentrale while - schleife des Systems. Sie steuert zyklisch die Abfolge aus Zeitaktualisierung, Tasterabfrage, Zustandsautomat-Update, LED-Ansteuerung und Display-Refresh.  
 
 
-checktimer: Liest den aktuellen Hardware-Zeitstempel aus dem TIMER-Register aus. Durch Subtraktion des vorherigen Zeitstempels wird das genaue Delta berechnet und zur Gesamtzeit addiert.  
+checktimer: Liest den aktuellen Hardware-Zeitstempel aus dem TIMER-Register aus. Durch Subtraktion des vorherigen Zeitstempels wird die Differenz berechnet und zur Gesamtzeit addiert.  
 
 
 displaytime: Liest die Zeit aus, wandelt die Zeit, die in mikrosekunden hochläuft unter Berücksichtigung von 60-Sekunden-Minuten in Ziffern um und bringt sie zur Anzeige.  
