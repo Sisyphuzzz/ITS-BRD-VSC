@@ -12,7 +12,7 @@ Die Anzeige auf dem Display erfolgt im Format mm:ss.nn mit einer Darstellungsauf
 Taster:
 Die Steuerung des Zustandsautomaten erfolgt über drei Taster:  
 
-Taster S7: Startet die Stoppuhr aus dem Initialisierungszustand bzw. setzt die Anzeige nach einer Pause fort.  
+Taster S7: Startet die Stoppuhr aus dem Initialisierungszustand bzw. setzt die Anzeige nach einer Pause fort.  0x7f
 
 Taster S6: Friert die aktuelle Zeitanzeige ein (Hold-Funktion).  
 

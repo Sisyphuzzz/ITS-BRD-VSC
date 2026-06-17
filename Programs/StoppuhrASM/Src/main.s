@@ -44,14 +44,16 @@ TIM2_ERG			equ (TIM2_BASE + 0x14)   ; 16 Bit register, Bit 0 : 1 Restart Timer
 	AREA MyData, DATA, align = 2
 
 DEFAULT_BRIGHTNESS	DCW     800
-zeit				DCB		"00:00.00", 0
+init				DCB		"00:00.00", 0
 zehnerminuten		DCB		0xFF
 einerminuten		DCB		0xFF
 zehnersekunden		DCB		0xFF
 einersekunden		DCB		0xFF
 zehnermillisekunden	DCB		0xFF
 einermillisekunden	DCB		0xFF
-
+stoppuhr_zeit      	SPACE 	4    
+letzter_timer_wert 	SPACE 	4    
+aktueller_zustand  	DCB  	0x04 
 ;********************************************
 ; Code section, aligned on 8-byte boundery
 ;********************************************
@@ -92,14 +94,103 @@ main	PROC
 		BL      lcdGotoXY
 		mov		R0,#'.'
 		BL		lcdPrintC
+
+		mov		R12,#0
 superloop
+		LDR     R1,=TIMER
+        LDR     R2, [R1]                ; R2 = Aktueller Hardware-Tick-Wert
+        
+        LDR     R3, =letzter_timer_wert
+        LDR     R4, [R3]                ; R4 = Wert aus der letzten Runde
+        
+        SUB     R5, R2, R4              ; R5 = Delta (vergangene Ticks)
+        STR     R2, [R3]                ; Aktuellen Wert für die nächste Runde merken
+
+		LDR		R0,=GPIO_F_PIN
+		ldrh	R0,[R0]
+		and		R0,#0xFF
+
+		cmp 	R0,#0x7F
+		beq 	ZustandRunning
+		cmp		R0,#0xBF
+		beq		ZustandHold
+		cmp		R0,#0xDF
+		beq		ZustandInit
+
+		b		Pruefe_Zeit
+		
+ZustandRunning
+		ldr		R1,=aktueller_zustand
+		mov		R0,#1
+		strb	R0,[R1]
+		b		Pruefe_Zeit
+
+ZustandHold
+		ldr		R1,=aktueller_zustand
+		mov		R0,#2
+		strb	R0,[R1]
+		b		Pruefe_Zeit	
+
+ZustandInit
+		ldr		R1,=aktueller_zustand
+		mov		R0,#3
+		strb	R0,[R1]
+		b    	Pruefe_Zeit
+
+Pruefe_Zeit
+        LDR     R1, =aktueller_zustand
+        LDRB    R7, [R1]
+        
+        cmp     R7, #1                  ; Sind wir im Zustand 1 (RUNNING)?
+        beq     Zeit_Hochzaehlen
+        cmp     R7, #2                  ; Sind wir im Zustand 2 (HOLD)?
+        beq     Zeit_Hochzaehlen
+        
+        ; Bei INIT (3) oder STOP (4) springen wir am Hochzählen vorbei!
+        b       ZustandAusfuehrung
+
+Zeit_Hochzaehlen
+        LDR     R6, =stoppuhr_zeit
+        LDR     R7, [R6]
+        ADD     R7, R7, R5              ; Addiere das Delta auf unsere Software-Uhr
+        STR     R7, [R6]
+
+ZustandAusfuehrung
+		LDR     R1, =aktueller_zustand
+        LDRB    R7, [R1]              ; Hier darf R12 kurz genutzt werden
+		cmp		R7,#1
+		beq		RUNNING
+		cmp		R7,#2
+		beq 	HOLD
+		cmp		R7,#3
+		beq		INIT
+		cmp		R7,#4
+		beq		STOP
+		b       superloop
+
+STOP ;Gehilfe von INIT, um Uhr einmalig auf 0 zu setzten
+		b 		superloop
+HOLD ;Unterprogramm, um den Timer anzuhalten
+		b 		superloop
+
+INIT ;Unterprogramm, um den Timer zu resetten
+		ldr     R1, =stoppuhr_zeit              
+        mov     R0, #0                   
+        str     R0, [R1]           
 		MOV     R0,#10
         MOV     R1,#6
 		BL      lcdGotoXY
-		; Unterprogramm, um den Timer laufen zu lassen
+
+		LDR		R0,=init
+		BL		lcdPrintS
+		LDR     R1, =aktueller_zustand
+        MOV     R0, #4              
+        STRB    R0, [R1]
+		b		superloop
 		
-		LDR     R0,=TIMER
-        LDR     R0,[R0]
+RUNNING ; Unterprogramm, um den Timer laufen zu lassen
+		LDR     R0, =stoppuhr_zeit
+        LDR     R0, [R0]
 		LDR     R1,=60000000
 		udiv    R11,R0,R1 ; R11 = zehner min.
 		mul     R1,R11,R1
@@ -201,7 +292,7 @@ then_05
 endif_05
 if_06	LDR		R9,=einermillisekunden
 		LDRB	R10,[R9]
-		cmp		R10,R7
+		cmp		R10,R8
 		beq		endif_06
 then_06		
 		MOV     R0,#17
@@ -211,8 +302,7 @@ then_06
 		BL		lcdPrintC
 		strb	R8, [R9]
 endif_06				
-
-		BAL		superloop				; End of superloop
+		b		superloop
 		ENDP
 
 		ALIGN
