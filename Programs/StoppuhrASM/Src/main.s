@@ -142,14 +142,17 @@ superloop
         STR     R2, [R3]                ; Aktuellen Wert für die nächste Runde merken
 
 		LDR		R0,=GPIO_F_PIN
-		ldrh	R0,[R0]
-		and		R0,#0xFF
+		ldrb	R0,[R0]
+		eor		R0,#0xFF
+		and		R1,R0,#0x80
+        and     R2,R0,#0x40
+		and		R3,R0,#0x20
 
-		cmp 	R0,#0x7F
+		cmp 	R1,#0x80
 		beq 	ZustandRunning
-		cmp		R0,#0xBF
+		cmp		R2,#0x40
 		beq		ZustandHold
-		cmp		R0,#0xDF
+		cmp		R3,#0x20
 		beq		ZustandInit
 
 		b		Pruefe_Zeit
