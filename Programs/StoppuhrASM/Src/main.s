@@ -83,10 +83,34 @@ main	PROC
 		bl  	lcdSetFont
 
 		; Ihre Initialisierung
+		MOV     R0,#10
+        MOV     R1,#6
+		BL      lcdGotoXY
+		mov     R0,#'0'
+		BL		lcdPrintC
+
+		MOV     R0,#11
+        MOV     R1,#6
+		BL      lcdGotoXY
+		mov     R0,#'0'
+		BL		lcdPrintC
+
 		MOV     R0,#12
         MOV     R1,#6
 		BL      lcdGotoXY
 		mov     R0,#':'
+		BL		lcdPrintC
+
+		MOV     R0,#13
+        MOV     R1,#6
+		BL      lcdGotoXY
+		mov     R0,#'0'
+		BL		lcdPrintC
+
+		MOV     R0,#14
+        MOV     R1,#6
+		BL      lcdGotoXY
+		mov     R0,#'0'
 		BL		lcdPrintC
 
 		MOV     R0,#15
@@ -95,7 +119,18 @@ main	PROC
 		mov		R0,#'.'
 		BL		lcdPrintC
 
-		mov		R12,#0
+		MOV     R0,#16
+        MOV     R1,#6
+		BL      lcdGotoXY
+		mov     R0,#'0'
+		BL		lcdPrintC
+
+		MOV     R0,#17
+        MOV     R1,#6
+		BL      lcdGotoXY
+		mov     R0,#'0'
+		BL		lcdPrintC
+
 superloop
 		LDR     R1,=TIMER
         LDR     R2, [R1]                ; R2 = Aktueller Hardware-Tick-Wert
@@ -141,12 +176,12 @@ Pruefe_Zeit
         LDR     R1, =aktueller_zustand
         LDRB    R7, [R1]
         
-        cmp     R7, #1                  ; Sind wir im Zustand 1 (RUNNING)?
+        cmp     R7, #1                  ; Sind wir im Zustand 1 (RUNNING)
         beq     Zeit_Hochzaehlen
-        cmp     R7, #2                  ; Sind wir im Zustand 2 (HOLD)?
+        cmp     R7, #2                  ; Sind wir im Zustand 2 (HOLD)
         beq     Zeit_Hochzaehlen
         
-        ; Bei INIT (3) oder STOP (4) springen wir am Hochzählen vorbei!
+        ; wenn 3 oder 4, dann überspringen
         b       ZustandAusfuehrung
 
 Zeit_Hochzaehlen
@@ -171,9 +206,21 @@ ZustandAusfuehrung
 STOP ;Gehilfe von INIT, um Uhr einmalig auf 0 zu setzten
 		b 		superloop
 HOLD ;Unterprogramm, um den Timer anzuhalten
+	    mov 	R0,#0xFC						;LED
+        LDR		R1,=GPIO_D_CLR					;LED
+		str		R0,[R1]							;LED
+		mov     R0,#3							;LED
+		LDR		R1,=GPIO_D_SET					;LED
+		str		R0,[R1]         				;LED
+
 		b 		superloop
 
 INIT ;Unterprogramm, um den Timer zu resetten
+
+		mov 	R0,#0xFF						;LED
+        LDR		R1,=GPIO_D_CLR					;LED
+		str		R0,[R1]							;LED
+
 		ldr     R1, =stoppuhr_zeit              
         mov     R0, #0                   
         str     R0, [R1]           
@@ -189,6 +236,14 @@ INIT ;Unterprogramm, um den Timer zu resetten
 		b		superloop
 		
 RUNNING ; Unterprogramm, um den Timer laufen zu lassen
+
+		mov 	R0,#0xFE						;LED
+        LDR		R1,=GPIO_D_CLR					;LED
+		str		R0,[R1]							;LED
+		mov     R0,#1							;LED
+		LDR		R1,=GPIO_D_SET					;LED
+		str		R0,[R1]         				;LED
+
 		LDR     R0, =stoppuhr_zeit
         LDR     R0, [R0]
 		LDR     R1,=60000000

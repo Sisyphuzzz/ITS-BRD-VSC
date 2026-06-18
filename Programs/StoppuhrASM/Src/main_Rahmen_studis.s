@@ -87,11 +87,11 @@ superloop
 		; bit i for R0 is 1 <=> button S<i> not pressed (for 0 <= i <= 7)
 		; bit i for R0 is 0 <=> button S<i>     pressed (for 0 <= i <= 7)
 		
-		; switch LEDs off (button s<i> not pressed : LED D<î+8> switched off (for 0 <= i <= 7)
+		; switch LEDs off (button s<i> not pressed : LED D<ï¿½+8> switched off (for 0 <= i <= 7)
 		LDR		R1,=GPIO_D_CLR
 		str		R0,[R1]
 		
-		; switch LEDs on (button s<i>      pressed : LED D<î+8> switched on  (for 0 <= i <= 7)
+		; switch LEDs on (button s<i>      pressed : LED D<ï¿½+8> switched on  (for 0 <= i <= 7)
 		eor		R1,R1,#0xFF       ; toogle bit 0 to 7 of R1
 		LDR		R1,=GPIO_D_SET
 		str		R0,[R1]	
